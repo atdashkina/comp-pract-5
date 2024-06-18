@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+// Функция для вычисления интерполяционного многочлена Лагранжа
+double lagrange_interpolation(const std::vector<double>& xi, const std::vector<double>& yi, double x) {
+    double result = 0.0;
+    int n = xi.size();
+    
+    for (int i = 0; i < n; ++i) {
+        double term = yi[i];
+        for (int j = 0; j < n; ++j) {
+            if (j != i) {
+                term *= (x - xi[j]) / (xi[i] - xi[j]);
+            }
+        }
+        result += term;
+    }
+    
+    return result;
+}
+
+// Главная функция
+int main() {
+    // Данные
+    std::vector<double> xi = {0.1 * M_PI, 0.2 * M_PI, 0.3 * M_PI, 0.4 * M_PI};
+    std::vector<double> yi(xi.size());
+    
+    // Вычисление значений функции yi = sin(xi)
+    for (size_t i = 0; i < xi.size(); ++i) {
+        yi[i] = sin(xi[i]);
+    }
+    
+    // Точка интерполяции x*
+    double x_star = 0.25 * M_PI;
+    
+    // Интерполяция
+    double y_star = lagrange_interpolation(xi, yi, x_star);
+    
+    // Вычисление истинного значения функции и погрешности
+    double true_value = sin(x_star);
+    double error = fabs(true_value - y_star);
+    
+    std::cout << "Значение функции в точке x* = " << x_star << " составляет y* = " << y_star << std::endl;
+    std::cout << "Истинное значение: " << true_value << std::endl;
+    std::cout << "Погрешность интерполяции: " << error << std::endl;
+    
+    return 0;
+}
