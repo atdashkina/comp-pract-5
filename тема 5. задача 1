@@ -1,0 +1,15 @@
+import numpy as np
+from scipy.interpolate import CubicSpline
+
+# Данные узлов интерполяции
+xi = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
+yi = np.array([0.0, 0.5, 0.86603, 1.0, 0.86603])
+
+# Кубический сплайн с граничными условиями нулевой кривизны (натуральный сплайн)
+cs = CubicSpline(xi, yi, bc_type='natural')
+
+# Значение функции в точке x* = 1.5
+x_star = 1.5
+y_star = cs(x_star)
+
+print(f"Значение функции в точке x* = {x_star} составляет y* = {y_star}")
